@@ -1,2 +1,2 @@
 # MECH
-All programs created over the course of my MECH degree at UBC
+A respository of the notable projects I created throughout the course of my mechanical engineering degree at UBC.
