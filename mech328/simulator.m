@@ -57,7 +57,7 @@ function [perStepEnergy, totalEnergy, perStepPower, reserveEnergy] = simulator(e
 
         % Check for the "stop" condition that resets the velocity for each stop
         % defined in the stops() matrix
-        if stopIndex ~= size(stops,2)
+        if stopIndex ~= size(stops,2) && isempty(stops) ~= 1
             if (stops(stopIndex) < d_0 + stopBound && stops(stopIndex) > d_0 - stopBound) % A stop has been found
                 velocity(index + 1, 1) = 0; % Reset the velocity
                 stopIndex = stopIndex + 1; % Check for next stop in matrix

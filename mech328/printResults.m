@@ -1,13 +1,16 @@
-function printResults(energy,totalEnergy,power,reserveEnergy,regenBool,regenEfficiency)
+function printResults(energy,totalEnergy,power,reserveEnergy,regenBool,regenEfficiency, Name)
     energy = sum(energy);
     power = (1/1000)*power;
     avgPower = movmean(power, 5);
+
+    fprintf("\n" + Name + "\n");
     
+    fprintf("Initial Energy: %.3f kWh\n", reserveEnergy(1,1));
     fprintf("Required Energy: %.3f Wh\n", energy/3600);
-    fprintf("Available Energy @ Terminus: %.3f kW\n", reserveEnergy(end,1));
-    fprintf("SoC @ Terminus: %.3f%%\n\n", 100*reserveEnergy(end,1)/reserveEnergy(1,1));
+    fprintf("Available Energy @ Terminus: %.3f Wh\n", reserveEnergy(end,1));
+    fprintf("SoC @ Terminus: %.3f%%\n", 100*reserveEnergy(end,1)/reserveEnergy(1,1));
     fprintf("Maximum Power: %.3f kW\n", max(avgPower));
-    fprintf("Average Power: %.3f kW\n\n", mean(avgPower));
+    fprintf("Average Power: %.3f kW\n", mean(avgPower));
     fprintf("Regeneration State: %i\n", regenBool);
     fprintf("Regeneration Efficiency: %.3f\n", regenEfficiency);
 end
