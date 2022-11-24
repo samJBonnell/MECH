@@ -8,20 +8,20 @@ function plotResults(elevationData,stops,energy,totalEnergy,power,reserveEnergy,
     % Plot total required energy vs. distance
     figure;
     hold on;
-    title(Name + " - Energy Use Across Trip (Wh)");
+    title(Name + " - Energy Use Across Trip (kWh)");
     xlabel('Distance (km)');
     yyaxis left
     ylabel('Elevation (m)');
     plot(distance, elevation, 'color', "#0072BD");
     ylim([0,450]);
     yyaxis right
-    ylabel('Total Energy Consumption (Wh)');
-    plot(distance, totEnergy, 'magenta');
+    ylabel('Total Energy Consumption (kWh)');
+    plot(distance, totEnergy/1000, 'red');
     ax = gca;
     ax.YAxis(1).Color = 'k';
     ax.YAxis(2).Color = 'k';
     if isempty(stops) ~= 1
-        plot(stops, 0, 'color', 'r', 'Marker', '+');
+        plot(stops, 0, 'Marker', '+');
     end
     legend("Elevation", "Required Energy", "Stop Locations", 'Location', 'northeastoutside');
     hold off;

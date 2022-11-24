@@ -35,7 +35,7 @@ startTime = 1;              % s
 stopBound = 0.05;           % Within 10 metres, the stop will be applied
 startingE = 140000;         % Total energy available in Wh 
 
-regenBool = 1;              % sets if simulation tracks regeneration energy
+regenBool = 0;              % sets if simulation tracks regeneration energy
 regenEfficiency = 0.60;     % acceptable range between 60 - 70%
 
 plotBool = 1;               % Set true if you want to plot results
@@ -46,6 +46,9 @@ R5elevationData = table2array(R5elevationData);             % Elevation, Slope (
 R5elevationData(:, 2) = atan(R5elevationData(:,2)/100);     % Convert slope percent into an angle (radians)
 
 R5stops = [0.43, 1.07, 1.61, 3.26, 4.78, 5.69, 7.00, 7.85, 8.66, 9.64, 10.32, 11.12, 12.32, 16.04, 17.10]; % A list of the stop locations in km from the start of the track
+
+% Load R5 reverse data
+[R5elevationData_reverse, R5stops_reverse] = invertElevationData(R5elevationData, R5stops);
 
 % Load R4 program data
 R4elevationData = readtable("R4.xlsx", VariableNamingRule="preserve");
@@ -66,14 +69,20 @@ B25stops = [0.61,1.08,1.56,1.92,2.97,3.43,3.65,4.09,4.80,5.02,5.42,5.61,6.09,6.6
 [R4_energy, R4_totalEnergy, R4_power, R4_reserveEnergy] = simulator(R4elevationData,R4stops,stopBound,startingE,Mass,C_d,A,rho_air,V_max,a_max,C_r,g,startTime,regenBool,regenEfficiency);
 [B25_energy, B25_totalEnergy, B25_power, B25_reserveEnergy] = simulator(B25elevationData,B25stops,stopBound,startingE,Mass,C_d,A,rho_air,V_max,a_max,C_r,g,startTime,regenBool,regenEfficiency);
 
+[R5_energy_reverse, R5_totalEnergy_reverse, R5_power_reverse, R5_reserveEnergy_reverse] = simulator(R5elevationData_reverse,R5stops_reverse,stopBound,startingE,Mass,C_d,A,rho_air,V_max,a_max,C_r,g,startTime,regenBool,regenEfficiency);
+
 % Print Results
 printResults(R5_energy, R5_totalEnergy, R5_power, R5_reserveEnergy,regenBool,regenEfficiency, "R5");
 printResults(R4_energy, R4_totalEnergy, R4_power, R4_reserveEnergy,regenBool,regenEfficiency, "R4");
 printResults(B25_energy, B25_totalEnergy, B25_power, B25_reserveEnergy,regenBool,regenEfficiency, "25");
+
+printResults(R5_energy_reverse, R5_totalEnergy_reverse, R5_power_reverse, R5_reserveEnergy_reverse,regenBool,regenEfficiency, "R5 reverse");
 
 % Plot Results
 if plotBool ~= 0
     plotResults(R5elevationData, R5stops, R5_energy, R5_totalEnergy, R5_power, R5_reserveEnergy, "R5");
     plotResults(R4elevationData, R4stops, R4_energy, R4_totalEnergy, R4_power, R4_reserveEnergy, "R4");
     plotResults(B25elevationData, B25stops, B25_energy, B25_totalEnergy, B25_power, B25_reserveEnergy, "25");
+
+    plotResults(R5elevationData_reverse, R5stops_reverse, R5_energy_reverse, R5_totalEnergy_reverse, R5_power_reverse, R5_reserveEnergy_reverse, "R5 reverse");
 end

@@ -49,6 +49,9 @@ function [perStepEnergy, totalEnergy, perStepPower, reserveEnergy] = simulator(e
 
         % Update SoC based on the energy calculated above
         reserveEnergy(index + 1, 1) = reserveEnergy(index, 1) - (perStepEnergy(index, 1)/3600);
+        if reserveEnergy(index + 1,1) > startingE
+            reserveEnergy(index + 1,1) = startingE;
+        end
         
         % If we have more than one point, start summing the total energy
         if index > 1
